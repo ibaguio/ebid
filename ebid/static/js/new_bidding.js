@@ -26,25 +26,25 @@ $(document).ready(function() {
         self.validationStatus = ko.observable();
 
         
-        if (time_left > 0){
-            self.timer = ko.observable(time_left);
-            self.minutes = ko.computed( function() {
-                return "Ends in: ("+ (Math.floor(self.timer() / 60) % 60).toString() + ":";
-            }, self);
+        // if (time_left > 0){
+        //     self.timer = ko.observable(time_left);
+        //     self.minutes = ko.computed( function() {
+        //         return "Ends in: ("+ (Math.floor(self.timer() / 60) % 60).toString() + ":";
+        //     }, self);
 
-            self.seconds = ko.computed( function() {
-                return (self.timer() % 60 ).toString() +")" ;
-            }, self);
+        //     self.seconds = ko.computed( function() {
+        //         return (self.timer() % 60 ).toString() +")" ;
+        //     }, self);
 
-            setInterval(function() {
-                var newTimer = self.timer() -1;
-                self.timer(newTimer <= 0 ? 60 : newTimer);
-                if (self.timer == 0) location.reload()
-            }, 1000);
-        }else{
+        //     setInterval(function() {
+        //         var newTimer = self.timer() -1;
+        //         self.timer(newTimer <= 0 ? 60 : newTimer);
+        //         if (self.timer == 0) location.reload()
+        //     }, 1000);
+        // }else{
             self.minutes = "";
             self.seconds = "";
-        }
+        // }
         
 
         self.getBidItemAJAX = function() {

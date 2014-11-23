@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/live_bidding/bid_info/$', 'ebid.views.bid_info', name='bid_info'),
     url(r'^cgi/fetch_live_bids/$', 'ebid.views.fetch_live_bids', name='fetch_live_bids'),
     url(r'^cgi/fetch_bids/$', 'ebid.views.fetch_bids', name='fetch_bids'),
+    url(r'^cgi/fetch_bid_history/$', 'ebid.views.fetch_bid_history', name='fetch_bid_history'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

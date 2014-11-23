@@ -10,26 +10,26 @@ $(document).ready(function() {
         self.status_number = ko.observable(status_);
         self.mybid = ko.observable(mybid)
         
-        if (end > 0){
-            self.timer = ko.observable(end);
-            self.minutes = ko.computed( function() {
-                return "Ends in: ("+ (Math.floor(self.timer() / 60) % 60).toString() + ":";
-            }, self);
+        // if (end > 0){
+        //     self.timer = ko.observable(end);
+        //     self.minutes = ko.computed( function() {
+        //         return "Ends in: ("+ (Math.floor(self.timer() / 60) % 60).toString() + ":";
+        //     }, self);
 
-            self.seconds = ko.computed( function() {
-                return (self.timer() % 60 ).toString() +")" ;
-            }, self);
+        //     self.seconds = ko.computed( function() {
+        //         return (self.timer() % 60 ).toString() +")" ;
+        //     }, self);
 
-            setInterval(function() {
-                var newTimer = self.timer() -1;
-                self.timer(newTimer <= 0 ? 60 : newTimer);
-                console.log(self.timer())
-                if (self.timer() == 0) location.reload()
-            }, 1000);
-        }else{
+        //     setInterval(function() {
+        //         var newTimer = self.timer() -1;
+        //         self.timer(newTimer <= 0 ? 60 : newTimer);
+        //         console.log(self.timer())
+        //         if (self.timer() == 0) location.reload()
+        //     }, 1000);
+        // }else{
             self.minutes = "";
             self.seconds = "";
-        }
+        // }
 
         if (status_ == '0'){
             self.status_ = ko.observable('PRE BID');

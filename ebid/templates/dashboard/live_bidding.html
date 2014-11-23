@@ -40,6 +40,7 @@
             <!-- /BREADCRUMBS -->
             <div class="clearfix">
                 <h3 class="content-title pull-left">Procurement Bids</h3>
+                <div class="pull-right"><a href="#addModal" class="btn btn-default" data-toggle="modal"><i class="fa fa-plus-square fa-fw"></i> Procure Items</a></div>
             </div>
             <div class="description">List of all procurement bids</div>
         </div>
@@ -79,7 +80,7 @@
                             <td data-bind="text: bidder"></td>
                             <td>
                                 <span data-bind="text: status_"></span>
-                                <span data-bind="text: minutes"></span><span data-bind="text: seconds"></span>
+                                <!-- <span data-bind="text: minutes"></span><span data-bind="text: seconds"></span> -->
                             </td>
                         </tr>
                     </tbody>
@@ -89,6 +90,62 @@
     </div>
 </div>
 
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Create New Bid</h4>
+            </div>
+            <form role="form" class="form-horizontal" action="{% url 'new_bidding' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Title</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Construction of Road" type="text" id="title" name="title" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Description</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="description" name="description" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Classification</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Civil Works" type="text" id="classification" name="classification" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Business Category</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Construction Projects" type="text" id="business_category" name="business_category" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Procurement Mode</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Public Bidding" type="text" id="procurement_mode" name="procurement_mode" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Approved Budget</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="budget" name="budget" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Contact Person</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="contact_person" name="contact_person" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Contact Person Address</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="contact_address" name="contact_address" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Reason</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="reason" name="reason" autofocus required></div>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-lg btn-primary"><span class="fa fa-plus fa-fw"></span> Next</button>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" data-bind="click: ">Cancel</button>
+                </div>
+            </form>
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
 {% endblock %}
 
 {% block post_scripts %}

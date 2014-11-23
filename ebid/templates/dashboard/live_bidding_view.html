@@ -129,6 +129,34 @@
                 </table>
             </div>
         </div>
+        <div class="box border green">
+            <div class="box-title">
+                <h4><i class="fa fa-trophy"></i><span class="hidden-inline-mobile">History for {{ bi.bid_title }}</span></h4>
+            </div>
+            <div class="box-body">
+                <table id="userlogs" cellpadding="0" cellspacing="0" border="0" class="datatable table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item No</th>
+                            <th>Item Name</th>
+                            <th>Qty</th>
+                            <th>My Bid</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: bid_history">
+                        <tr data-bind="click: $parent.row_click">
+                            <td data-bind="text: no"></td>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: qty"></td>
+                            <td data-bind="text: mybid"></td>
+                            <td data-bind="text: time_"></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
     </div>
     </div>
 </div>

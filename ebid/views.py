@@ -38,6 +38,24 @@ def home(request):
 def history(request):
    return
 
+def fetch_bid_history(request):
+   print "history"
+   response = []
+   try:
+      bid = BidInformation.objects.get(id=request.GET.get('id'))
+      bix = BidInstance.objects.filter(org=request.user.org,bidinfo=bid).order_by('-time')
+
+      print bid, bix
+      for bx in bix:
+         response.append([bx.biditem.item_no, bx.biditem.name, 
+            bx.biditem.quantity, bx.budget, str(bx.time + timedelta(hours=8))[:19]])
+
+   except Exception,e:
+      import logging
+      logging.exception(e)
+   print response
+   return HttpResponse(json.dumps(response),content_type="application/json")
+
 def login(request):
    """
    Displays the login form and handles the login action.
@@ -72,9 +90,9 @@ def login(request):
 
 @login_required(login_url=LOGIN_PATH)
 def dashboard(request):
-   if request.user.acct_type == 'S':
-      return redirect("/dashboard/live_bidding/")
-   return render(request, 'dashboard/home.html')
+   # if request.user.acct_type == 'S':
+   return redirect("/dashboard/live_bidding/")
+   # return render(request, 'dashboard/home.html')
 
 def new_bidding(request):
    if request.method == "POST":
@@ -265,7 +283,6 @@ def live_bidding_new(request):
       try:
          bid = BidInformation.objects.get(id=request.POST.get('id'))
          bid_instance = BidInstance.objects.filter(bidinfo = bid).values('biditem')
-
 
       except Exception, e:
          raise e

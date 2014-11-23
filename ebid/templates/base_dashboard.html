@@ -84,12 +84,6 @@
 
                     <!-- SIDEBAR MENU -->
                     <ul>{% if user.acct_type == 'G' or user.acct_type == 'A' %}
-                        <li id="dashboard" class="dashboard">
-                            <a href="/dashboard">
-                            <i class="fa fa-tachometer fa-fw"></i> <span class="menu-text">Dashboard</span>
-                            <span class="selected"></span>
-                            </a>
-                        </li>
                         {% else %}
                         <li id="dashboard" class="dashboard">
                             <a href="/dashboard/history/">

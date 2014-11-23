@@ -22,7 +22,6 @@ $(document).ready(function() {
                     bid_item_id:row_.id(),
                     bid_budget:x,
                 }
-                console.log(data);
                 $.ajax("/dashboard/live_bidding/do_bid/", {
                     type: 'post',
                     data: data,
@@ -53,13 +52,32 @@ $(document).ready(function() {
         self.qty = ko.observable(qty);
         self.mybid = ko.observable(mybid);
         self.myrank = ko.observable(myrank);
+    }
 
+    var BidHistoryObject = function(no, name, qty, mybid, time_) {
+        var self = this;
+        self.no = ko.observable(no);
+        self.name = ko.observable(name);
+        self.qty = ko.observable(qty);
+        self.mybid = ko.observable(mybid);
+        self.time_ = ko.observable(time_);
     }
 
     var BidViewModel = function() {
         var self = this;
         self.bids = ko.observableArray([]);
         self.biditems = ko.observableArray([]);
+        self.bid_history = ko.observableArray([]);
+
+        self.getHistoryAJAX = function() {
+            $.getJSON("/cgi/fetch_bid_history/?id="+bidinfo_id, function(data) {
+                $.each(data, function(key, value) {
+                    self.bid_history.push(new BidHistoryObject(value[0],value[1],value[2],value[3],value[4]));
+                });
+            });
+        }
+        self.getHistoryAJAX();
+
         self.getBidsAJAX = function() {
             $.getJSON("/cgi/fetch_bids/?id="+bidinfo_id, function(data) {
                 $.each(data, function(key, value) {
