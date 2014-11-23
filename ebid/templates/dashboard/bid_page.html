@@ -1,0 +1,56 @@
+{% extends "base_dashboard.html"%}
+{% load staticfiles %}
+{% block css %}
+<style>
+.rotate-45 {
+    display: inline-block;
+    -o-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(SizingMethod='auto expand', M11=-0.7071067811865476, M12=0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476)"; /* IE8 */
+}
+</style>
+{% endblock %}
+{% block main_body %}
+<!-- PAGE HEADER-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header">
+            <!-- BREADCRUMBS -->
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/dashboard">Home</a>
+                </li>
+                <li>Live Bidding</li>
+                <li>Bid Information</li>
+            </ul>
+            <!-- /BREADCRUMBS -->
+            <div class="clearfix">
+                <h3 class="content-title pull-left">Bid Information</h3>
+            </div>
+            <div class="description">Details of bid</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block post_scripts %}
+<script type="text/javascript" src="{% static 'js/knockoutjs/knockout-3.1.0.js' %}"></script>
+<script>
+jQuery(document).ready(function() {
+    App.setPage("overview");  //Set current page
+    App.init(); //Initialise plugins and elements
+});
+$(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+    $(window).trigger('resize');
+});
+$(document).on( 'click', '.sidebar-collapse', function (e) {
+    $(window).trigger('resize');
+});
+var SITE_VARS = {
+    user_analytics_data : "{% url 'fetch_live_bids' %}?ap=all"
+}
+</script>
+{% endblock %}

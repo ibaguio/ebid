@@ -1,0 +1,165 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% csrf_token %}
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>{% block title %}Dashboard{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/cloud-admin.css' %}" >
+        <link rel="stylesheet" type="text/css"  href="{% static 'css/themes/default.css' %}" id="skin-switcher" >
+        <link rel="stylesheet" type="text/css"  href="{% static 'css/responsive.css' %}" >
+        <!-- STYLESHEETS --><!--[if lt IE 9]><script src="{% static 'js/flot/excanvas.min.js' %}"></script><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><script src="//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
+        <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+        <!-- DATE RANGE PICKER -->
+        <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap-daterangepicker/daterangepicker-bs3.css' %}" />
+        <style>
+        {% if user.is_admin or user.is_viewer %}
+        .navbar {
+          background: none repeat scroll 0 0 #5e87b0;
+          border: none;
+          border-radius: 0;
+          margin: 0;
+        }
+        {% endif %}
+        </style>
+        {% block css %}{% endblock %}
+        {% block pre_scripts%}{% endblock %}
+    </head>
+    <body>
+        <!-- HEADER -->
+        <header class="navbar clearfix" id="header">
+            <div class="container">
+                    <div class="navbar-brand">
+                        <!-- COMPANY LOGO -->
+                        <!-- /COMPANY LOGO -->
+                        <!-- SIDEBAR COLLAPSE -->
+                        <div id="sidebar-collapse" class="sidebar-collapse btn">
+                            <i class="fa fa-bars"
+                                data-icon1="fa fa-bars"
+                                data-icon2="fa fa-bars" ></i>
+                        </div>
+                        <!-- /SIDEBAR COLLAPSE -->
+                    </div>
+
+                    <!-- BEGIN TOP NAVIGATION MENU -->
+                    <ul class="nav navbar-nav pull-right">
+                        <!-- BEGIN USER LOGIN DROPDOWN -->
+                        <li class="dropdown user" id="header-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user fa-fw" style="font-size: 2.2em;"></i>
+                                <span class="username">{{ user }}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'user_profile' %}"><i class="fa fa-user"></i> User Profile</a></li>
+                                <li><a href="/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                            </ul>
+                        </li>
+                        <!-- END USER LOGIN DROPDOWN -->
+                    </ul>
+                    <!-- END TOP NAVIGATION MENU -->
+            </div>
+        </header>
+        <!--/HEADER -->
+
+        <!-- PAGE -->
+        <section id="page">
+            <!-- SIDEBAR -->
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-menu nav-collapse">
+                    <div class="divide-20" style="height:70px;"></div>
+                    <!-- SEARCH BAR -->
+                    <div id="search-bar" class="hidden">
+                        <input class="search" type="text" placeholder="Search"><i class="fa fa-search search-icon"></i>
+                    </div>
+                    <!-- /SEARCH BAR -->
+
+                    <!-- SIDEBAR QUICK-LAUNCH -->
+                    <!-- <div id="quicklaunch"> -->
+                    <!-- /SIDEBAR QUICK-LAUNCH -->
+
+                    <!-- SIDEBAR MENU -->
+                    <ul>{% if user.acct_type == 'G' or user.acct_type == 'A' %}
+                        <li id="dashboard" class="dashboard">
+                            <a href="/dashboard">
+                            <i class="fa fa-tachometer fa-fw"></i> <span class="menu-text">Dashboard</span>
+                            <span class="selected"></span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li id="dashboard" class="dashboard">
+                            <a href="/dashboard/history/">
+                            <i class="fa fa-history fa-fw"></i> <span class="menu-text">History</span>
+                            <span class="selected"></span>
+                            </a>
+                        </li>
+                        {%endif%}
+                        <li id="live_bidding" class="">
+                            <a href="/dashboard/live_bidding/">
+                            <i class="fa fa-trophy fa-fw"></i> <span class="menu-text">Live Bidding</span>
+                            <span class="selected"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /SIDEBAR MENU -->
+                </div>
+            </div>
+            <!-- /SIDEBAR -->
+            <div id="main-content">
+                <div class="container">
+                    <div class="row">
+                        <div id="content" class="col-lg-12">
+                            {% block main_body %}
+                            {% endblock %}
+                            <div class="footer-tools">
+                                <span class="go-top">
+                                    <i class="fa fa-chevron-up"></i> Top
+                                </span>
+                            </div>
+                        </div><!-- /CONTENT-->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--/PAGE -->
+        <!-- JAVASCRIPTS -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- JQUERY -->
+        <script src="{% static 'js/jquery/jquery-2.0.3.min.js' %}"></script>
+        <!-- JQUERY UI-->
+        <script src="{% static 'js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+        <!-- BOOTSTRAP -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <!-- DATE RANGE PICKER -->
+        <script src="{% static 'js/bootstrap-daterangepicker/moment.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap-daterangepicker/daterangepicker.min.js' %}"></script>
+        <!-- SLIMSCROLL -->
+        <script type="text/javascript" src="{% static 'js/jQuery-slimScroll-1.3.0/jquery.slimscroll.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jQuery-slimScroll-1.3.0/slimScrollHorizontal.min.js' %}"></script>
+        <!-- BLOCK UI -->
+        <script type="text/javascript" src="{% static 'js/jQuery-BlockUI/jquery.blockUI.min.js' %}"></script>
+        <!-- COOKIE -->
+        <script type="text/javascript" src="{% static 'js/jQuery-Cookie/jquery.cookie.min.js' %}"></script>
+        <!-- SCROLLABLE LIB -->
+        <script src="{% static 'js/jquery.ui.scrollable.js' %}"></script>
+        <!-- EASY PIE CHART -->
+        <script type="text/javascript" src="{% static 'js/easypiechart/easypiechart.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/easypiechart/jquery.easypiechart.min.js' %}"></script>
+
+        <!-- ASYNC LIBRARY -->
+        <script src="{% static 'js/async.js' %}"></script>
+        <!-- CUSTOM SCRIPT -->
+        <script src="{% static 'js/script.js' %}"></script>
+        <!-- KNOCKOUT JS -->
+        <script type="text/javascript" src="{% static 'js/knockoutjs/knockout-3.1.0.js' %}"></script>
+        <!-- /JAVASCRIPTS -->
+        <script>
+        /*$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);*/
+        </script>
+        {% block post_scripts%}{% endblock %}
+    </body>
+</html>

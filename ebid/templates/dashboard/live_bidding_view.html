@@ -1,0 +1,180 @@
+{% extends "base_dashboard.html"%}
+{% load staticfiles %}
+
+{% block css %}
+<!-- DATA TABLES -->
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/media/css/jquery.dataTables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/media/assets/css/datatables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/extras/TableTools/media/css/TableTools.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}">
+
+<style>
+    .multiselect {
+      text-align: left;
+    }
+    .multiselect b.caret {
+      position: absolute;
+      top: 14px;
+      right: 8px;
+    }
+    tr.live-bid > td{
+     background-color: #0f0 !important;
+    }
+
+</style>
+{% endblock %}
+
+{% block main_body %}
+<!-- PAGE HEADER-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header">
+            <!-- BREADCRUMBS -->
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/dashboard">Home</a>
+                </li>
+                <li>User Logs</li>
+            </ul>
+            <!-- /BREADCRUMBS -->
+            <div class="clearfix">
+                <h3 class="content-title pull-left">Procurement Bids</h3>
+                <div class='pull-right'>
+                    
+                    {% if acct_type == 'S' and not bidder %}
+                    <a class="btn btn-info" id="overview-settings-btn" data-bind="click: addBidder"><i class="fa fa-plus"></i> Participate in Bid</a>
+                    {% endif%}
+            </div>
+            </div>
+            <div class="description">List of all procurement bids</div>
+            
+        </div>
+    </div>
+</div>
+<!-- /PAGE HEADER -->
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
+<div class="row" style="padding-left:15px">
+    <div class="col-md-4">
+        <div class="row">
+        <table class="table table-striped table-condensed table-bordered">
+            {% for key,value in info %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <!-- BOX -->
+        <div class="box border">
+            <div class="box-title">
+                <h4><i class="fa fa-trophy"></i><span class="hidden-inline-mobile">Items for {{ bi.bid_title }}</span></h4>
+            </div>
+            <div class="box-body">
+                <table id="biditem" cellpadding="0" cellspacing="0" border="0" class="datatable table table-hover table-bordered table-striped">
+            <thead>
+                <th>No</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>UOM</th>
+                <th>Budget</th>
+                <th>Action</th>
+            </thead>
+            <tbody data-bind="foreach: biditems">
+                <tr>
+                    <td data-bind="text: no"></td>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: description"></td>
+                    <td data-bind="text: qty"></td>
+                    <td data-bind="text: uom"></td>
+                    <td data-bind="text: budget"></td>
+                    <td data-bind="html: bidme_btn, click: bidme"></td>
+                </tr>
+            </tbody>    
+        </table>
+            </div>
+        </div>
+        <div class="box border green">
+            <div class="box-title">
+                <h4><i class="fa fa-trophy"></i><span class="hidden-inline-mobile">Bids for {{ bi.bid_title }}</span></h4>
+            </div>
+            <div class="box-body">
+                <table id="userlogs" cellpadding="0" cellspacing="0" border="0" class="datatable table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item No</th>
+                            <th>Item Name</th>
+                            <th>Qty</th>
+                            <th>My Bid</th>
+                            <th>My Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: bids">
+                        <tr data-bind="click: $parent.row_click">
+                            <td data-bind="text: no"></td>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: qty"></td>
+                            <td data-bind="text: mybid"></td>
+                            <td data-bind="text: myrank"></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Bid to </h4>
+            </div>
+            <form role="form" class="form-horizontal" action="{% url 'new_bidding' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Reason</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="reason" name="reason" autofocus required></div>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-lg btn-primary"><span class="fa fa-plus fa-fw"></span> Next</button>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+
+{% endblock %}
+
+{% block post_scripts %}
+<script type="text/javascript" src="{% static 'js/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/media/assets/js/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/extras/TableTools/media/js/TableTools.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/live_bidding_view.js' %}"></script>
+<script>
+    $('.userlogs').addClass('active');
+    jQuery(document).ready(function() {
+        App.setPage("userlogs");  //Set current page
+        App.init(); //Initialise plugins and elements
+    });
+
+    var bidinfo_id = {{ bi.id}};
+    var status_ = {{status}};
+</script>
+{% endblock %}

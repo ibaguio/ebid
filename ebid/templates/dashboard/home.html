@@ -1,0 +1,116 @@
+{% extends "base_dashboard.html"%}
+{% load staticfiles %}
+{% block css %}
+<style>
+.rotate-45 {
+    display: inline-block;
+    -o-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(SizingMethod='auto expand', M11=-0.7071067811865476, M12=0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476)"; /* IE8 */
+}
+</style>
+{% endblock %}
+{% block main_body %}
+<!-- PAGE HEADER-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header">
+            <!-- BREADCRUMBS -->
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/dashboard">Home</a>
+                </li>
+                <li>Dashboard</li>
+            </ul>
+            <!-- /BREADCRUMBS -->
+            <div class="clearfix">
+                <h3 class="content-title pull-left">Dashboard</h3>
+            </div>
+            <div class="description">Live Bids</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <a href="#addModal" class="btn btn-default" data-toggle="modal"><i class="fa fa-plus-square fa-fw"></i> Procure Items</a>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Create New Bid</h4>
+            </div>
+            <form role="form" class="form-horizontal" action="{% url 'new_bidding' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Title</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Construction of Road" type="text" id="title" name="title" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Description</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="description" name="description" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Classification</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Civil Works" type="text" id="classification" name="classification" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Business Category</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Construction Projects" type="text" id="business_category" name="business_category" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Procurement Mode</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="Public Bidding" type="text" id="procurement_mode" name="procurement_mode" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Approved Budget</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="budget" name="budget" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Contact Person</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="contact_person" name="contact_person" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Contact Person Address</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="contact_address" name="contact_address" autofocus required></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="question" class="col-md-3 control-label">Reason</label>
+                        <div class="col-md-8"><input class="form-control" placeholder="" type="text" id="reason" name="reason" autofocus required></div>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-lg btn-primary"><span class="fa fa-plus fa-fw"></span> Next</button>
+                    <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal" data-bind="click: clearAlerts">Cancel</button>
+                </div>
+            </form>
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+
+{% endblock %}
+
+{% block post_scripts %}
+<script type="text/javascript" src="{% static 'js/knockoutjs/knockout-3.1.0.js' %}"></script>
+<script>
+jQuery(document).ready(function() {
+    App.setPage("overview");  //Set current page
+    App.init(); //Initialise plugins and elements
+});
+$(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+    $(window).trigger('resize');
+});
+$(document).on( 'click', '.sidebar-collapse', function (e) {
+    $(window).trigger('resize');
+});
+var SITE_VARS = {
+    user_analytics_data : "{% url 'fetch_live_bids' %}?ap=all"
+}
+</script>
+{% endblock %}

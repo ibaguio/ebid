@@ -1,0 +1,108 @@
+{% extends "base_dashboard.html"%}
+{% load staticfiles %}
+
+{% block css %}
+<!-- DATA TABLES -->
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/media/css/jquery.dataTables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/media/assets/css/datatables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'js/datatables/extras/TableTools/media/css/TableTools.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}">
+
+<style>
+    .multiselect {
+      text-align: left;
+    }
+    .multiselect b.caret {
+      position: absolute;
+      top: 14px;
+      right: 8px;
+    }
+    tr.live-bid > td{
+     background-color: #0f0 !important;
+    }
+
+</style>
+{% endblock %}
+
+{% block main_body %}
+<!-- PAGE HEADER-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-header">
+            <!-- BREADCRUMBS -->
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/dashboard">Home</a>
+                </li>
+                <li>User Logs</li>
+            </ul>
+            <!-- /BREADCRUMBS -->
+            <div class="clearfix">
+                <h3 class="content-title pull-left">Procurement Bids</h3>
+            </div>
+            <div class="description">List of all procurement bids</div>
+        </div>
+    </div>
+</div>
+<!-- /PAGE HEADER -->
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- BOX -->
+        <div class="box border green">
+            <div class="box-title">
+                <h4><i class="fa fa-trophy"></i><span class="hidden-inline-mobile">Bids</span></h4>
+            </div>
+            <div class="box-body">
+                <table id="userlogs" cellpadding="0" cellspacing="0" border="0" class="datatable table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Organization</th>
+                            <th>Classification</th>
+                            <th>Budget</th>
+                            <th>Bidders</th>
+                            <th>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: bids">
+                        <tr data-bind="click: $parent.row_click">
+                            <td data-bind="text: title_"></td>
+                            <td data-bind="text: proc_entity"></td>
+                            <td data-bind="text: class_"></td>
+                            <td data-bind="text: budget"></td>
+                            <td data-bind="text: bidder"></td>
+                            <td>
+                                <span data-bind="text: status_"></span>
+                                <span data-bind="text: minutes"></span><span data-bind="text: seconds"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block post_scripts %}
+<script type="text/javascript" src="{% static 'js/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/media/assets/js/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/extras/TableTools/media/js/TableTools.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables/extras/TableTools/media/js/ZeroClipboard.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/live_bidding.js' %}"></script>
+<script>
+    $('.userlogs').addClass('active');
+    jQuery(document).ready(function() {
+        App.setPage("userlogs");  //Set current page
+        App.init(); //Initialise plugins and elements
+    });
+</script>
+{% endblock %}

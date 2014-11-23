@@ -1,0 +1,80 @@
+{% extends "base_registration.html" %}
+{% load staticfiles %}
+
+{% block header %}
+<header>
+</header>
+{% endblock %}
+
+{% block main_body %}
+<!-- LOGIN -->
+<section id="login" class="visible">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-box-plain">
+                    <h2 class="bigintro">Sign In</h2>
+                    <div class="divide-40"></div>
+                    <form role="form" method="post" action="/login/">
+                      {% csrf_token %}
+                      {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                          {{ error|escape }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                      <div class="form-group">
+                        <label for="username">Username</label>
+                        <i class="fa fa-user"></i>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                      </div>
+                      <div class="form-group"> 
+                        <label for="password">Password</label>
+                        <i class="fa fa-lock"></i>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                      </div>
+                      <div class="form-actions">
+                        <label class="checkbox"> <input type="checkbox" class="uniform" value=""> Remember me</label>
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                      </div>
+                    </form>
+                    
+                    <div class="login-helpers">
+                        <a href="#" onclick="swapScreen('forgot');return false;">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/LOGIN -->
+<!-- FORGOT PASSWORD -->
+<section id="forgot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-box-plain">
+                    <h2 class="bigintro">Reset Password</h2>
+                    <div class="divide-40"></div>
+                    <form role="form" method="post" {#action="{% url 'password_reset' %}"#}>
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <label for="useremail">Enter your Email address</label>
+                        <i class="fa fa-envelope"></i>
+                        <input type="email" name="email" class="form-control" id="useremail" >
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-info">Send Me Reset Instructions</button>
+                      </div>
+                    </form>
+                    <div class="login-helpers">
+                        <a href="#" onclick="swapScreen('login');return false;">Back to Login</a> <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- FORGOT PASSWORD -->
+{% endblock %}
